@@ -47,6 +47,11 @@ function deleteLast(){
 function handleOperator(op) {
     if (currentValue === "") return;
 
+    // Replace 'x' with '*' for multiplication
+    if (op === 'x') {
+        op = '*';
+    }
+
     // Replace operator if user clicks operator again
     if (previous.innerText.slice(-1).match(/[+\-*/]/)) {
         previous.innerText = previous.innerText.trimEnd().slice(0, -1) + ` ${op} `;
@@ -54,7 +59,15 @@ function handleOperator(op) {
         previous.innerText = previous.innerText.trimEnd() + ` ${op} `;
     }
 
-    firstValue = currentValue;
+    // Store the first value and operator
+    if (firstValue === "") {
+        firstValue = currentValue;
+    } else if (operator) {
+        // Perform intermediate calculation if operator already exists
+        calculate();
+        firstValue = currentValue;
+    }
+
     operator = op;
     currentValue = "";
     current.innerText = "0";
@@ -75,7 +88,7 @@ function percentage(){
 }
 
 // Calculate the result when '=' is pressed
-function calculate(){
+function calculate() {
     if (firstValue === "" || currentValue === "") return;
 
     let result;
@@ -98,10 +111,10 @@ function calculate(){
             break;
         default:
             return;
-   }
+    }
 
-   // Show full calculation and result
-    previous.innerText = `${firstValue} ${operator} ${currentValue}`;
+    // Show full calculation and result
+    previous.innerText = `${firstValue} ${operator} ${currentValue} =`;
     currentValue = result.toString();
     current.innerText = currentValue;
     firstValue = "";
