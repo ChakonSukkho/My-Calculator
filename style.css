@@ -54,10 +54,10 @@ body {
 
 /* Calculation /previous result */
 .previous {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem; /* Slightly larger for better visibility */
+    color: rgba(255, 255, 255, 0.7); /* Slightly brighter */
     text-align: right;
-    min-height: 18px;
+    min-height: 22px; /* Ensure enough space for the secondary value */
 }
 
 /* Current number */

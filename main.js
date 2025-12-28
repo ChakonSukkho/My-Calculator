@@ -12,6 +12,14 @@ function appendValue(value) {
     } else {
         currentValue += value;
     }
+
+    // Append the value to the previous display
+    if (previous.innerText === "0") {
+        previous.innerText = value;
+    } else {
+        previous.innerText += value;
+    }
+
     updateDisplay();
 }
 
@@ -34,9 +42,15 @@ function deleteLast(){
 function handleOperator(op) {
     if (currentValue === "") return;
 
+    // Ensure proper spacing around the operator in the previous display
+    if (previous.innerText.slice(-1).match(/[+\-*/]/)) {
+        previous.innerText = previous.innerText.trimEnd().slice(0, -1) + ` ${op} `;
+    } else {
+        previous.innerText = previous.innerText.trimEnd() + ` ${op} `;
+    }
+
     firstValue = currentValue;
     operator = op;
-    previous.innerText = `${firstValue} ${operator}`;
     currentValue = "";
     current.innerText = "0";
 }
@@ -54,32 +68,7 @@ function percentage(){
     updateDisplay();
 }
 
-// Advance version
-
-// function percentage(){
-//     if(display.value === "") return;
-
-//     let value = display.value;
-
-//     try{
-//         if(value.includes("+") || value.includes("-")){
-//             let parts = value.split(/([+\-])/);
-//             let base = parseFloat(parts[0]);
-//             let percent = parseFloat(parts[2]);
-//             display.value = base + parts[1] + (base*percent/100);
-//         }
-//         else if(value.includes("*") || value.includes("/")){
-//             let parts = value.split(/([*/])/);
-//             display.value = eval(parts[0] + parts[1] + (parts[2] / 100));
-//         }
-//         else{
-//             display.value = value/100;
-//         }
-//     }catch{
-//         display.value = "Error";
-//     }
-// }
-
+// Calculate result
 function calculate(){
     if (firstValue === "" || currentValue === "") return;
 
@@ -104,6 +93,7 @@ function calculate(){
             return;
    }
 
+   // Update previous and current displays
     previous.innerText = `${firstValue} ${operator} ${currentValue}`;
     currentValue = result.toString();
     current.innerText = currentValue;
