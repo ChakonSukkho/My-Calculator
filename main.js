@@ -1,19 +1,22 @@
+// Get display elements
 const current = document.getElementById("current");
 const previous = document.getElementById("previous");
 
+// Variables to store values
 let currentValue = "";
 let operator = "";
 let firstValue = "";
 
-
+// Add number or dot when button is clicked
 function appendValue(value) {
+    // Replace 0 when first number is entered
     if (currentValue === "0" && value !== ".") {
         currentValue = value;
     } else {
         currentValue += value;
     }
 
-    // Append the value to the previous display
+    // Show typing numbers in previous display
     if (previous.innerText === "0") {
         previous.innerText = value;
     } else {
@@ -23,6 +26,7 @@ function appendValue(value) {
     updateDisplay();
 }
 
+// Clear all values and reset display
 function clearDisplay(){
     currentValue = "";
     firstValue = "";
@@ -31,6 +35,7 @@ function clearDisplay(){
     current.innerText = "0";
 }
 
+// Remove last entered number
 function deleteLast(){
     currentValue = currentValue.slice(0, -1);
 
@@ -38,11 +43,11 @@ function deleteLast(){
     updateDisplay();
 }
 
-// Operator clicked
+// When operator (+ - * /) is clicked
 function handleOperator(op) {
     if (currentValue === "") return;
 
-    // Ensure proper spacing around the operator in the previous display
+    // Replace operator if user clicks operator again
     if (previous.innerText.slice(-1).match(/[+\-*/]/)) {
         previous.innerText = previous.innerText.trimEnd().slice(0, -1) + ` ${op} `;
     } else {
@@ -55,20 +60,21 @@ function handleOperator(op) {
     current.innerText = "0";
 }
 
+// Change number to positive or negative
 function toggleSign(){
     if (currentValue === "") return;
     currentValue = (-parseFloat(currentValue)).toString();
     updateDisplay();
 }
 
-// Simple version
+// Convert number to percentage
 function percentage(){
     if (currentValue === "") return;
     currentValue = (parseFloat(currentValue) / 100).toString();
     updateDisplay();
 }
 
-// Calculate result
+// Calculate the result when '=' is pressed
 function calculate(){
     if (firstValue === "" || currentValue === "") return;
 
@@ -76,6 +82,7 @@ function calculate(){
     let a = parseFloat(firstValue);
     let b = parseFloat(currentValue);
 
+    // Perform calculation based on operator
     switch (operator) {
         case "+":
             result = a + b;
@@ -93,7 +100,7 @@ function calculate(){
             return;
    }
 
-   // Update previous and current displays
+   // Show full calculation and result
     previous.innerText = `${firstValue} ${operator} ${currentValue}`;
     currentValue = result.toString();
     current.innerText = currentValue;
@@ -101,7 +108,7 @@ function calculate(){
     operator = "";
 }
 
-// Update display
+// Update the current display number
 function updateDisplay() {
     current.innerText = currentValue;
 }
